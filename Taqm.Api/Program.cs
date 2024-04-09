@@ -17,11 +17,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Connecting to Sql Server
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
-
 #region Dependency Injection
 builder.Services.AddInfrastructureDependencies()
     .AddServiceDependencies()
-    .AddCoreDependencies();
+    .AddCoreDependencies()
+    .AddServiceRegistration();
 #endregion
 
 #region Localization
@@ -60,6 +60,7 @@ builder.Services.AddCors(options =>
                       });
 });
 #endregion
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
