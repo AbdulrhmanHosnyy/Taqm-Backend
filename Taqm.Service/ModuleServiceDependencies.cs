@@ -9,6 +9,7 @@ namespace Taqm.Service
         public static IServiceCollection AddServiceDependencies(this IServiceCollection services)
         {
             services.AddTransient<IPostureService, PostureService>();
+            services.AddTransient<IEmailService, EmailService>();
 
             return services;
         }

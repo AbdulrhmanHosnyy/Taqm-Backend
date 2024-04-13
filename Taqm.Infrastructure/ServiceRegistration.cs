@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Taqm.Data.Entities.Identity;
+using Taqm.Data.Helpers;
 using Taqm.Infrastructure.Data;
 
 namespace Taqm.Infrastructure
 {
     public static class ServiceRegistration
     {
-        public static IServiceCollection AddServiceRegistration(this IServiceCollection services)
+        public static IServiceCollection AddServiceRegistration(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddIdentity<User, IdentityRole<int>>(options =>
             {
@@ -31,6 +33,11 @@ namespace Taqm.Infrastructure
                 options.SignIn.RequireConfirmedEmail = false;
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            //  Email Authentication
+            var emailSettings = new EmailSettings();
+            configuration.GetSection(nameof(emailSettings)).Bind(emailSettings);
+            services.AddSingleton(emailSettings);
             return services;
 
         }

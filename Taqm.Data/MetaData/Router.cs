@@ -21,6 +21,11 @@
             public const string Create = prefix + "Create";
             public const string GetById = prefix + "GetById/" + SingleRoute;
         }
+        public static class EmailRouting
+        {
+            public const string prefix = Rule + "Email/";
+            public const string SendEmail = prefix + "SendEmail";
+        }
         #endregion
 
 
