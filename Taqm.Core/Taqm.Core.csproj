@@ -13,6 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Features\Emails\Queries\Handlers\" />
+    <Folder Include="Features\Emails\Queries\Models\" />
+    <Folder Include="Features\Emails\Queries\Responses\" />
     <Folder Include="Features\Posts\Commands\" />
     <Folder Include="Mappings\Posts\CommandMapping\" />
   </ItemGroup>
