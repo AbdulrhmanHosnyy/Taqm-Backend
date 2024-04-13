@@ -34,7 +34,7 @@ namespace Taqm.Service.Services
             await _postRepository.UpdateAsync(posture);
             return "Success";
         }
-        public async Task<string> Renew(int id)
+        public async Task<string> RenewAsync(int id)
         {
             Post post = await _postRepository.GetByIdAsync(id);
             post.CreatedAt = DateTime.Now;
