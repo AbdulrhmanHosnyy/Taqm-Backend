@@ -25,7 +25,7 @@ namespace Taqm.Core.Features.Posts.Queries.Handlers
             _mapper = mapper;
         }
         #endregion
-        #region Methods
+        #region Handlers
         public async Task<Response<GetPostByIdResponse>> Handle(GetPostByIdQuery request, CancellationToken cancellationToken)
         {
             var post = await _postureService.GetByIdAsync(request.Id);

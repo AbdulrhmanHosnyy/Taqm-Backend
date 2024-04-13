@@ -117,7 +117,49 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmPasswordNotEqualPassword" xml:space="preserve">
+    <value>Conifrm Password doesn't match Password</value>
+  </data>
+  <data name="Deleted" xml:space="preserve">
+    <value>Deleted Successfully</value>
+  </data>
+  <data name="DeleteFailed" xml:space="preserve">
+    <value>Delete Failed</value>
+  </data>
+  <data name="MatchEmail" xml:space="preserve">
+    <value>Email is not in a valid format "Example_1@gmail.com"</value>
+  </data>
+  <data name="MatchPassword" xml:space="preserve">
+    <value>Password must contain at least one uppercase letter, one lowercase letter, one symbol, and one number</value>
+  </data>
+  <data name="MaxLength16" xml:space="preserve">
+    <value>Maximum Length is 16</value>
+  </data>
+  <data name="MaxLength30" xml:space="preserve">
+    <value>Maximum Length is 30</value>
+  </data>
+  <data name="MaxLength50" xml:space="preserve">
+    <value>Maximum Length is 50</value>
+  </data>
+  <data name="MinLength6" xml:space="preserve">
+    <value>Minimum Length is 6</value>
+  </data>
+  <data name="NotEmpty" xml:space="preserve">
+    <value>NotEmpty</value>
+  </data>
   <data name="NotFound" xml:space="preserve">
     <value>Not Found</value>
+  </data>
+  <data name="NotNull" xml:space="preserve">
+    <value>NotNull</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Password Changed Successfully</value>
+  </data>
+  <data name="Updated" xml:space="preserve">
+    <value>Updated Successfully</value>
+  </data>
+  <data name="UpdateFailed" xml:space="preserve">
+    <value>Update Failed</value>
   </data>
 </root>
