@@ -16,6 +16,7 @@ namespace Taqm.Infrastructure.Data.Configuration
             builder.Property(p => p.ProductColor).HasMaxLength(50);
             builder.Property(p => p.ProductCondition).HasMaxLength(50);
             builder.Property(p => p.ProductSize).HasMaxLength(50);
+            builder.HasOne(p => p.User).WithMany(p => p.Posts).HasForeignKey(p => p.UserId);
         }
     }
 }
