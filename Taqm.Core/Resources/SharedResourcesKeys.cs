@@ -19,6 +19,12 @@
         public const string DeleteFailed = "DeleteFailed";
         public const string PasswordChanged = "PasswordChanged";
         public const string SendEmailFailed = "SendEmailFailed";
+        public const string TryToRegisterAgain = "TryToRegisterAgain";
+        public const string FaildToAddUser = "FaildToAddUser";
+        public const string EmailIsExist = "EmailIsExist";
+        public const string ErrorConfirmEmail = "ErrorConfirmEmail";
+        public const string ConfirmEmailDone = "ConfirmEmailDone";
+        public const string ConfirmEmail = "ConfirmEmail";
 
 
     }

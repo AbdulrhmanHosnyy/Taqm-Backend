@@ -26,6 +26,11 @@
             public const string prefix = Rule + "Email/";
             public const string SendEmail = prefix + "SendEmail";
         }
+        public static class AuthenticationRouting
+        {
+            public const string prefix = Rule + "Authentication/";
+            public const string ConfirmEmail = prefix + "ConfirmEmail";
+        }
         #endregion
 
 

@@ -1,4 +1,7 @@
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Taqm.Core;
@@ -16,12 +19,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 // Connecting to Sql Server
-builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
+builder.Services.AddDbContext<AppDbContext>(options => options.
+UseSqlServer(builder.Configuration["ConnectionStrings:DefaultConnection"]));
+
 #region Dependency Injection
 builder.Services.AddInfrastructureDependencies()
     .AddServiceDependencies()
     .AddCoreDependencies()
     .AddServiceRegistration(builder.Configuration);
+
+builder.Services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+
+builder.Services.AddTransient<IUrlHelper>(x =>
+{
+    var actionContext = x.GetRequiredService<IActionContextAccessor>().ActionContext;
+    var factory = x.GetRequiredService<IUrlHelperFactory>();
+    return factory.GetUrlHelper(actionContext);
+});
 #endregion
 
 #region Localization
@@ -60,6 +74,8 @@ builder.Services.AddCors(options =>
                       });
 });
 #endregion
+
+
 
 var app = builder.Build();
 

@@ -117,6 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ConfirmEmail" xml:space="preserve">
+    <value>Confirm Email first</value>
+  </data>
+  <data name="ConfirmEmailDone" xml:space="preserve">
+    <value>Confirm email done successfully</value>
+  </data>
   <data name="ConfirmPasswordNotEqualPassword" xml:space="preserve">
     <value>Conifrm Password doesn't match Password</value>
   </data>
@@ -125,6 +131,15 @@
   </data>
   <data name="DeleteFailed" xml:space="preserve">
     <value>Delete Failed</value>
+  </data>
+  <data name="EmailIsExist" xml:space="preserve">
+    <value>Email is already exist</value>
+  </data>
+  <data name="ErrorConfirmEmail" xml:space="preserve">
+    <value>Error while confirming email</value>
+  </data>
+  <data name="FaildToAddUser" xml:space="preserve">
+    <value>Failed to add user</value>
   </data>
   <data name="MatchEmail" xml:space="preserve">
     <value>Email is not in a valid format "Example_1@gmail.com"</value>
@@ -161,6 +176,9 @@
   </data>
   <data name="SendEmailFailed" xml:space="preserve">
     <value>Failed to send email</value>
+  </data>
+  <data name="TryToRegisterAgain" xml:space="preserve">
+    <value>Try to register again</value>
   </data>
   <data name="Updated" xml:space="preserve">
     <value>Updated Successfully</value>

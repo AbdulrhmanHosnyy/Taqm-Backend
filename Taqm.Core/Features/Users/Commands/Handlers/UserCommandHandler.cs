@@ -7,6 +7,7 @@ using Taqm.Core.Bases;
 using Taqm.Core.Features.Users.Commands.Models;
 using Taqm.Core.Resources;
 using Taqm.Data.Entities.Identity;
+using Taqm.Service.Abstracts;
 
 namespace Taqm.Core.Features.Users.Commands.Handlers
 {
@@ -21,27 +22,44 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
         private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
-        //private readonly IUserService _userService;
+        private readonly IUserService _userService;
         #endregion
 
         #region Constructors
         public UserCommandHandler(IStringLocalizer<SharedResources> stringLocalizer, IMapper mapper,
-            UserManager<User> userManager, IHttpContextAccessor contextAccessor) : base(stringLocalizer)
+            UserManager<User> userManager, IHttpContextAccessor contextAccessor, IUserService userService) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _mapper = mapper;
             _userManager = userManager;
             _contextAccessor = contextAccessor;
+            _userService = userService;
         }
         #endregion
 
         #region Handlers
-        public Task<Response<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
+        public async Task<Response<string>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
             //  Mapping User
             var user = _mapper.Map<User>(request);
+
             // Create User
-            throw new NotImplementedException();
+            var result = await _userService.CreateAsync(user, request.Password);
+            switch (result)
+            {
+                case "EmailIsExist":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.EmailIsExist]);
+                case "ConfirmEmail":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.ConfirmEmail]);
+                case "ErrorInCreateUser":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.FaildToAddUser]);
+                case "Failed":
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.TryToRegisterAgain]);
+                case "Success":
+                    return Success<string>("");
+                default:
+                    return BadRequest<string>(result);
+            }
         }
 
         public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
