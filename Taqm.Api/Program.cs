@@ -21,7 +21,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(buil
 builder.Services.AddInfrastructureDependencies()
     .AddServiceDependencies()
     .AddCoreDependencies()
-    .AddServiceRegistration();
+    .AddServiceRegistration(builder.Configuration);
 #endregion
 
 #region Localization
