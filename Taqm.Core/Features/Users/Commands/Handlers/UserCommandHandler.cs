@@ -72,12 +72,15 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
             var newUser = _mapper.Map(request, oldUser);
 
             //  Updating
-            var result = await _userManager.UpdateAsync(newUser);
+            var result = await _userService.UpdateAsync(newUser, request.Image);
 
             // Return message
-            if (!result.Succeeded) return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.UpdateFailed]);
-            return Success((string)_stringLocalizer[SharedResourcesKeys.Updated]);
-
+            switch (result)
+            {
+                case "FailedToUploadImage": return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.FailedToUploadImage]);
+                case "Failed": return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.UpdateFailed]);
+            }
+            return Success<string>(_stringLocalizer[SharedResourcesKeys.Updated]);
         }
 
         public async Task<Response<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)

@@ -141,6 +141,9 @@
   <data name="FaildToAddUser" xml:space="preserve">
     <value>Failed to add user</value>
   </data>
+  <data name="FailedToUploadImage" xml:space="preserve">
+    <value>Failed to upload the image</value>
+  </data>
   <data name="MatchEmail" xml:space="preserve">
     <value>Email is not in a valid format "Example_1@gmail.com"</value>
   </data>

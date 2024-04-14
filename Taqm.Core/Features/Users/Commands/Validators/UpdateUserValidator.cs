@@ -24,13 +24,9 @@ namespace Taqm.Core.Features.Users.Commands.Validators
         public void ApplyValidationRules()
         {
             RuleFor(u => u.FirstName)
-                .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
-                .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull])
                 .MaximumLength(30).WithMessage(_stringLocalizer[SharedResourcesKeys.MaxLength30]);
 
             RuleFor(u => u.LastName)
-                .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
-                .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull])
                 .MaximumLength(30).WithMessage(_stringLocalizer[SharedResourcesKeys.MaxLength30]);
         }
         public void ApplyCustomValidationRules()

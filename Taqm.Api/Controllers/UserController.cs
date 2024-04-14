@@ -12,6 +12,10 @@ namespace Taqm.Api.Controllers
         [HttpPost(Router.UserRouting.Create)]
         public async Task<IActionResult> Create([FromBody] CreateUserCommand createUserCommand) =>
             NewResult(await Mediator.Send(createUserCommand));
+
+        [HttpPut(Router.UserRouting.Update)]
+        public async Task<IActionResult> Update([FromForm] UpdateUserCommand updateUserCommand) =>
+            NewResult(await Mediator.Send(updateUserCommand));
         #endregion
     }
 }

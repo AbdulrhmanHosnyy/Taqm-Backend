@@ -15,18 +15,20 @@ namespace Taqm.Service.Services
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUrlHelper _urlHelper;
         private readonly IEmailService _emailService;
+        private readonly IFileService _fileService;
 
         #endregion
 
         #region Constructors
         public UserService(UserManager<User> userManager, AppDbContext appDbContext, IHttpContextAccessor contextAccessor,
-            IUrlHelper urlHelper, IEmailService emailService)
+            IUrlHelper urlHelper, IEmailService emailService, IFileService fileService)
         {
             _userManager = userManager;
             _appDbContext = appDbContext;
             _contextAccessor = contextAccessor;
             _urlHelper = urlHelper;
             _emailService = emailService;
+            _fileService = fileService;
         }
         #endregion
 
@@ -72,6 +74,25 @@ namespace Taqm.Service.Services
             catch (Exception)
             {
                 await transaction.RollbackAsync();
+                return "Failed";
+            }
+        }
+
+        public async Task<string> UpdateAsync(User user, IFormFile file)
+        {
+            var context = _contextAccessor.HttpContext.Request;
+            var baseUrl = context.Scheme + "://" + context.Host;
+            var imageUrl = await _fileService.UploadImageAsync("Users", file);
+            if (imageUrl == "FailedToUploadImage") return "FailedToUploadImage";
+            else if (imageUrl == "NoImage") user.Image = null;
+            else user.Image = baseUrl + imageUrl;
+            try
+            {
+                await _userManager.UpdateAsync(user);
+                return "Success";
+            }
+            catch (Exception)
+            {
                 return "Failed";
             }
         }
