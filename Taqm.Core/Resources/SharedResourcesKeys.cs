@@ -25,6 +25,7 @@
         public const string ErrorConfirmEmail = "ErrorConfirmEmail";
         public const string ConfirmEmailDone = "ConfirmEmailDone";
         public const string ConfirmEmail = "ConfirmEmail";
+        public const string FailedToUploadImage = "FailedToUploadImage";
 
 
     }

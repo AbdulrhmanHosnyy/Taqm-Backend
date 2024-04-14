@@ -7,7 +7,8 @@ namespace Taqm.Core.Mappings.Users
     {
         public void UpdateUserCommandMapping()
         {
-            CreateMap<UpdateUserCommand, User>();
+            CreateMap<UpdateUserCommand, User>()
+                .ForMember(dest => dest.Image, opt => opt.Ignore());
         }
     }
 }

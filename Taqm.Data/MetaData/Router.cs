@@ -20,6 +20,7 @@
             public const string prefix = Rule + "User/";
             public const string Create = prefix + "Create";
             public const string GetById = prefix + "GetById/" + SingleRoute;
+            public const string Update = prefix + "Update";
         }
         public static class EmailRouting
         {
