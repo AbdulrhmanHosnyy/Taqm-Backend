@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Taqm.Core.Bases;
 using Taqm.Core.Features.Users.Commands.Models;
@@ -15,23 +14,22 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
         IRequestHandler<CreateUserCommand, Response<string>>,
         IRequestHandler<UpdateUserCommand, Response<string>>,
         IRequestHandler<DeleteUserCommand, Response<string>>,
-        IRequestHandler<ChangeUserPasswordCommand, Response<string>>
+        IRequestHandler<ChangeUserPasswordCommand, Response<string>>,
+        IRequestHandler<ForgetPasswordCommand, Response<string>>
     {
         #region Fields
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
-        private readonly UserManager<User> _userManager;
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserService _userService;
         #endregion
 
         #region Constructors
         public UserCommandHandler(IStringLocalizer<SharedResources> stringLocalizer, IMapper mapper,
-            UserManager<User> userManager, IHttpContextAccessor contextAccessor, IUserService userService) : base(stringLocalizer)
+             IHttpContextAccessor contextAccessor, IUserService userService) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _mapper = mapper;
-            _userManager = userManager;
             _contextAccessor = contextAccessor;
             _userService = userService;
         }
@@ -65,7 +63,7 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
         public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             //  Check user existance
-            var oldUser = await _userManager.FindByIdAsync(request.Id.ToString());
+            var oldUser = await _userService.GetUserByIdAsync(request.Id);
             if (oldUser is null) return NotFound<string>();
 
             //  Mapping
@@ -85,30 +83,40 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
 
         public async Task<Response<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
-            //  Check user existance
-            var user = await _userManager.FindByIdAsync(request.Id.ToString());
-            if (user is null) return NotFound<string>();
+            var deleteResult = await _userService.DeleteAsync(request.Id);
 
-            //  Deleting
-            var result = await _userManager.DeleteAsync(user);
-
-            //  Return message
-            if (!result.Succeeded) return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.DeleteFailed]);
-            return Success((string)_stringLocalizer[SharedResourcesKeys.Deleted]);
+            switch (deleteResult)
+            {
+                case "NotFound": return NotFound<string>();
+                case "Failed": return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.DeleteFailed]);
+                case "Success": return Success((string)_stringLocalizer[SharedResourcesKeys.Deleted]);
+                default: return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.DeleteFailed]);
+            }
         }
 
         public async Task<Response<string>> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
         {
-            //  Check user existance
-            var user = await _userManager.FindByIdAsync(request.Id.ToString());
-            if (user is null) return NotFound<string>();
+            var changePasswordResult = await _userService.ChangePasswordAsync(request.Id, request.CurrentPassword, request.ConfirmPassword);
 
-            //  Chnage Password
-            var result = await _userManager.ChangePasswordAsync(user, request.CurrentPassword, request.NewPassword);
+            switch (changePasswordResult)
+            {
+                case "Failed": return NotFound<string>();
+                case "Success": return Success((string)_stringLocalizer[SharedResourcesKeys.PasswordChanged]);
+                default: return BadRequest<string>(changePasswordResult); ;
+            }
+        }
 
-            //  Return message
-            if (!result.Succeeded) return BadRequest<string>(result.Errors.FirstOrDefault().Description);
-            return Success((string)_stringLocalizer[SharedResourcesKeys.PasswordChanged]);
+        public async Task<Response<string>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
+        {
+            // Create User
+            var result = await _userService.ForgetPasswordAsync(request.Email);
+            switch (result)
+            {
+                case "NotFound": return NotFound<string>();
+                case "Failed": return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.FailedToSendResetPasswordLink]);
+                case "Success": return Success((string)_stringLocalizer[SharedResourcesKeys.ResetLinkWasSent]);
+                default: return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.FailedToSendResetPasswordLink]);
+            }
         }
         #endregion
 

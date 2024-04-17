@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Taqm.Data.Entities.Identity;
 using Taqm.Infrastructure.Data;
 using Taqm.Service.Abstracts;
-
 namespace Taqm.Service.Services
 {
     public class UserService : IUserService
@@ -16,7 +16,6 @@ namespace Taqm.Service.Services
         private readonly IUrlHelper _urlHelper;
         private readonly IEmailService _emailService;
         private readonly IFileService _fileService;
-
         #endregion
 
         #region Constructors
@@ -77,7 +76,16 @@ namespace Taqm.Service.Services
                 return "Failed";
             }
         }
-
+        public async Task<User> GetUserByIdAsync(int id) => await _userManager.FindByIdAsync(id.ToString());
+        public async Task<User> GetUserByIdIncludingPostsAsync(int id)
+        {
+            return await _userManager.Users
+            .AsNoTracking()
+            .AsQueryable()
+            .Where(u => u.Id == id)
+            .Include(u => u.Posts)
+            .FirstOrDefaultAsync();
+        }
         public async Task<string> UpdateAsync(User user, IFormFile file)
         {
             var context = _contextAccessor.HttpContext.Request;
@@ -93,6 +101,65 @@ namespace Taqm.Service.Services
             }
             catch (Exception)
             {
+                return "Failed";
+            }
+        }
+        public async Task<string> DeleteAsync(int id)
+        {
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user is null) return "NotFound";
+
+            var result = await _userManager.DeleteAsync(user);
+
+            return result.Succeeded ? "Success" : "Failed";
+        }
+        public async Task<string> ChangePasswordAsync(int id, string currentPassword, string newPassword)
+        {
+            //  Check user existance
+            var user = await _userManager.FindByIdAsync(id.ToString());
+            if (user is null) return "Failed";
+
+            //  Chnage Password
+            var result = await _userManager.ChangePasswordAsync(user, currentPassword, newPassword);
+
+            return result.Succeeded ? "Success" : result.Errors.FirstOrDefault().Description;
+
+        }
+        public async Task<string> ForgetPasswordAsync(string email)
+        {
+            var transaction = await _appDbContext.Database.BeginTransactionAsync();
+
+            try
+            {
+                // Check user existance
+                var user = await _userManager.FindByEmailAsync(email);
+                if (user is null) return "NotFound";
+
+                var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+                //  Reset Password link
+                var requestAccessor = _contextAccessor.HttpContext.Request;
+                var returnUrl = requestAccessor.Scheme + "://" + requestAccessor.Host +
+                    _urlHelper.Action("ResetPasswordToken", "Authentication", new { Token = resetToken });
+                var message = $@"
+                    <html>
+                    <head>
+                        <title>Reset Password Token</title>
+                    </head>
+                    <body>
+                        <p>You can the reset password token through this link:</p>
+                        <a href='{returnUrl}'>{returnUrl}</a>
+                    </body>
+                    </html>";
+
+                //  Send Confirm Url
+                await _emailService.SendEmail(user.Email, "Reset Password Token", message);
+                await transaction.CommitAsync();
+                return "Success";
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
                 return "Failed";
             }
         }

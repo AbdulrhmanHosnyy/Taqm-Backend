@@ -17,6 +17,7 @@ namespace Taqm.Service.Services
         }
         #endregion
 
+        #region Methods
         public async Task<string> ConfirmEmailAsync(int? userId, string? code)
         {
             if (userId is null || code is null) return "ErrorConfirmEmail";
@@ -25,6 +26,16 @@ namespace Taqm.Service.Services
             if (!confirmEmail.Succeeded) return "ErrorConfirmEmail";
             return "Success";
         }
+        public async Task<string> ResetPasswordAsync(string password, string email, string token)
+        {
+            // Check user existance
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user is null) return "NotFound";
 
+            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, token, password);
+            if (resetPasswordResult.Succeeded) return "Success";
+            return resetPasswordResult.Errors.FirstOrDefault().Description;
+        }
+        #endregion
     }
 }

@@ -24,8 +24,8 @@ namespace Taqm.Core.Features.Authentication.Queries.Validator
         public void ApplyValidationRules()
         {
             RuleFor(u => u.UserId)
-           .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
-           .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
+               .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
+               .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
 
             RuleFor(u => u.Code)
                  .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])

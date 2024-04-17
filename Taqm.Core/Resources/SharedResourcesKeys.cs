@@ -26,6 +26,9 @@
         public const string ConfirmEmailDone = "ConfirmEmailDone";
         public const string ConfirmEmail = "ConfirmEmail";
         public const string FailedToUploadImage = "FailedToUploadImage";
+        public const string FailedToSendResetPasswordLink = "FailedToSendResetPasswordLink";
+        public const string ResetLinkWasSent = "ResetLinkWasSent";
+        public const string FailedToResetPassword = "FailedToResetPassword";
 
 
     }

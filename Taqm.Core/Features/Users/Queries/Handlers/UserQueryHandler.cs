@@ -1,42 +1,51 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Localization;
 using Taqm.Core.Bases;
 using Taqm.Core.Features.Users.Queries.Models;
 using Taqm.Core.Features.Users.Queries.Responses;
 using Taqm.Core.Resources;
-using Taqm.Data.Entities.Identity;
+using Taqm.Service.Abstracts;
 
 namespace Taqm.Core.Features.Users.Queries.Handlers
 {
     public class UserQueryHandler : ResponseHandler,
-        IRequestHandler<GetUserByIdQuery, Response<GetUserByIdResponse>>
+        IRequestHandler<GetUserByIdQuery, Response<GetUserByIdResponse>>,
+        IRequestHandler<GetUserByIdIncludingPostsQuery, Response<GetUserByIdIncludingPostsResponse>>
     {
         #region Fields
         public readonly IStringLocalizer<SharedResources> _stringLocalizer;
         public readonly IMapper _mapper;
-        public readonly UserManager<User> _userManager;
+        private readonly IUserService _userService;
         #endregion
 
         #region Constructors
         public UserQueryHandler(IStringLocalizer<SharedResources> stringLocalizer, IMapper mapper,
-            UserManager<User> userManager) : base(stringLocalizer)
+             IUserService userService) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _mapper = mapper;
-            _userManager = userManager;
+            _userService = userService;
         }
         #endregion
 
         #region Handlers
         public async Task<Response<GetUserByIdResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            var user = await _userManager.Users.FirstOrDefaultAsync(x => x.Id == request.Id);
+            var user = await _userService.GetUserByIdAsync(request.Id);
             if (user is null) return NotFound<GetUserByIdResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
 
             var result = _mapper.Map<GetUserByIdResponse>(user);
+
+            return Success(result);
+        }
+
+        public async Task<Response<GetUserByIdIncludingPostsResponse>> Handle(GetUserByIdIncludingPostsQuery request, CancellationToken cancellationToken)
+        {
+            var user = await _userService.GetUserByIdIncludingPostsAsync(request.Id);
+            if (user is null) return NotFound<GetUserByIdIncludingPostsResponse>(_stringLocalizer[SharedResourcesKeys.NotFound]);
+
+            var result = _mapper.Map<GetUserByIdIncludingPostsResponse>(user);
 
             return Success(result);
         }

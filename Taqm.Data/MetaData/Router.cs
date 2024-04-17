@@ -20,7 +20,11 @@
             public const string prefix = Rule + "User/";
             public const string Create = prefix + "Create";
             public const string GetById = prefix + "GetById/" + SingleRoute;
+            public const string GetByIdIncludingPosts = prefix + "GetByIdIncludingPosts/" + SingleRoute;
             public const string Update = prefix + "Update";
+            public const string Delete = prefix + "Delete/" + SingleRoute;
+            public const string ChangePassword = prefix + "ChangePassword";
+            public const string ForgetPassword = prefix + "ForgetPassword";
         }
         public static class EmailRouting
         {
@@ -31,6 +35,8 @@
         {
             public const string prefix = Rule + "Authentication/";
             public const string ConfirmEmail = prefix + "ConfirmEmail";
+            public const string ResetPasswordToken = prefix + "ResetPasswordToken";
+            public const string ResetPassword = prefix + "ResetPassword";
         }
         #endregion
 
