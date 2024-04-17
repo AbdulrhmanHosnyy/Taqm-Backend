@@ -34,6 +34,8 @@ namespace Taqm.Infrastructure
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
 
+            //  Forget Password Token Expiry Date
+            services.Configure<DataProtectionTokenProviderOptions>(opt => opt.TokenLifespan = TimeSpan.FromHours(1));
             //  Email Authentication
             var emailSettings = new EmailSettings();
             configuration.GetSection(nameof(emailSettings)).Bind(emailSettings);

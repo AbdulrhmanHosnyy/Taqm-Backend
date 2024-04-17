@@ -141,6 +141,12 @@
   <data name="FaildToAddUser" xml:space="preserve">
     <value>Failed to add user</value>
   </data>
+  <data name="FailedToResetPassword" xml:space="preserve">
+    <value>Failed To Reset Password</value>
+  </data>
+  <data name="FailedToSendResetPasswordLink" xml:space="preserve">
+    <value>Failed to send reset password link</value>
+  </data>
   <data name="FailedToUploadImage" xml:space="preserve">
     <value>Failed to upload the image</value>
   </data>
@@ -176,6 +182,9 @@
   </data>
   <data name="PasswordChanged" xml:space="preserve">
     <value>Password Changed Successfully</value>
+  </data>
+  <data name="ResetLinkWasSent" xml:space="preserve">
+    <value>Reset password link is sent</value>
   </data>
   <data name="SendEmailFailed" xml:space="preserve">
     <value>Failed to send email</value>

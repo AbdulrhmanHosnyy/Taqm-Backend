@@ -13,9 +13,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Authentication\Commands\Handlers\" />
-    <Folder Include="Features\Authentication\Commands\Models\" />
-    <Folder Include="Features\Authentication\Commands\Validators\" />
     <Folder Include="Features\Authentication\Queries\Responses\" />
     <Folder Include="Features\Emails\Queries\Handlers\" />
     <Folder Include="Features\Emails\Queries\Models\" />

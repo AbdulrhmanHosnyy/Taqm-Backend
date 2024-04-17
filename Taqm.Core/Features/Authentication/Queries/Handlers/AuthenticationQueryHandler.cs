@@ -8,7 +8,8 @@ using Taqm.Service.Abstracts;
 namespace Taqm.Core.Features.Authentication.Queries.Handlers
 {
     public class AuthenticationQueryHandler : ResponseHandler,
-        IRequestHandler<ConfirmEmailQuery, Response<string>>
+        IRequestHandler<ConfirmEmailQuery, Response<string>>,
+        IRequestHandler<ResetPasswordTokenQuery, Response<string>>
     {
         #region Fields
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
@@ -31,6 +32,10 @@ namespace Taqm.Core.Features.Authentication.Queries.Handlers
             if (confirmEmail == "ErrorConfirmEmail")
                 return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.ErrorConfirmEmail]);
             return Success<string>(_stringLocalizer[SharedResourcesKeys.ConfirmEmailDone]);
+        }
+        public async Task<Response<string>> Handle(ResetPasswordTokenQuery request, CancellationToken cancellationToken)
+        {
+            return Success(request.token);
         }
         #endregion
     }
