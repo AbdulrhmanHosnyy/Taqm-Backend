@@ -30,7 +30,9 @@ namespace Taqm.Service.Services
                     var bodybuilder = new BodyBuilder
                     {
                         HtmlBody = $"{message}",
+
                         TextBody = "wellcome",
+
                     };
                     var msg = new MimeMessage
                     {

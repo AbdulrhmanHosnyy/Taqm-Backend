@@ -1,5 +1,5 @@
+﻿using Microsoft.AspNetCore.Identity;
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -38,6 +38,7 @@ namespace Taqm.Infrastructure
 
             })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
             //  Forget Password Token Expiry Date
             services.Configure<DataProtectionTokenProviderOptions>(opt => opt.TokenLifespan = TimeSpan.FromHours(1));
@@ -80,7 +81,6 @@ namespace Taqm.Infrastructure
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Taqm Project", Version = "v1" });
                 c.EnableAnnotations();
-
                 c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {
                     Description = "JWT Authorization header using the Bearer scheme (Example: 'Bearer 12345abcdef')",
