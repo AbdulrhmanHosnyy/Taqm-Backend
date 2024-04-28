@@ -365,6 +365,43 @@ namespace Taqm.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Taqm.Data.Entities.Identity.User", b =>
+                {
+                    b.OwnsMany("Taqm.Data.Entities.Identity.UserRefreshToken", "UserRefreshTokens", b1 =>
+                        {
+                            b1.Property<int>("UserId")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<DateTime>("CreatedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpiresOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime?>("RevokedOn")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Token")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("UserId", "Id");
+
+                            b1.ToTable("UserRefreshToken");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("UserRefreshTokens");
+                });
+
             modelBuilder.Entity("Taqm.Data.Entities.Post", b =>
                 {
                     b.HasOne("Taqm.Data.Entities.Identity.User", "User")

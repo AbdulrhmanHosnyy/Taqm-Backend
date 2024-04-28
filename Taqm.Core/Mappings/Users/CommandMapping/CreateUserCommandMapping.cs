@@ -7,7 +7,8 @@ namespace Taqm.Core.Mappings.Users
     {
         public void AddUserCommandMapping()
         {
-            CreateMap<CreateUserCommand, User>();
+            CreateMap<CreateUserCommand, User>()
+                .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.Email));
         }
     }
 }

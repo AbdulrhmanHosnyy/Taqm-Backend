@@ -9,6 +9,7 @@ namespace Taqm.Core.Mappings.Users
         public void GetUserByIdQueryMapping()
         {
             CreateMap<User, GetUserByIdResponse>();
+            CreateMap<User, GetUserByIdIncludingPostsResponse>();
             CreateMap<Post, GetUserByIdPostsResponse>();
         }
     }

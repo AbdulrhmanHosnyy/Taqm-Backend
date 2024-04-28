@@ -20,6 +20,21 @@
         public const string PasswordChanged = "PasswordChanged";
         public const string SendEmailFailed = "SendEmailFailed";
 
+        public const string TryToRegisterAgain = "TryToRegisterAgain";
+        public const string FaildToAddUser = "FaildToAddUser";
+        public const string EmailIsExist = "EmailIsExist";
+        public const string ErrorConfirmEmail = "ErrorConfirmEmail";
+        public const string ConfirmEmailDone = "ConfirmEmailDone";
+        public const string ConfirmEmail = "ConfirmEmail";
+        public const string FailedToUploadImage = "FailedToUploadImage";
+        public const string FailedToSendResetPasswordLink = "FailedToSendResetPasswordLink";
+        public const string ResetLinkWasSent = "ResetLinkWasSent";
+        public const string FailedToResetPassword = "FailedToResetPassword";
+        public const string EmailIsNotExist = "EmailIsNotExist";
+        public const string IncorrectPassword = "IncorrectPassword";
+        public const string FailedToRevoke = "FailedToRevoke";
+
+
 
     }
 }

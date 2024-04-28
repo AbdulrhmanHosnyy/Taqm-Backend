@@ -11,7 +11,7 @@ namespace Taqm.Service.Abstracts
             Expression<Func<Post, object>> orderBy = null, string orderByDirection = OrderBy.Ascending);
         public Task<string> CreateAsync(Post posture);
         public Task<string> UpdateAsync(Post posture);
-        public Task<string> Renew(int id);
+        public Task<string> RenewAsync(int id);
         public Task<string> DeleteAsync(Post posture);
     }
 }

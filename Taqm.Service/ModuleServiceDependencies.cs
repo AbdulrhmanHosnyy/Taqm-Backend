@@ -11,6 +11,11 @@ namespace Taqm.Service
             services.AddTransient<IPostureService, PostureService>();
             services.AddTransient<IEmailService, EmailService>();
 
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IAuthenticationService, AuthenticationService>();
+            services.AddTransient<IFileService, FileService>();
+
+
             return services;
         }
     }
