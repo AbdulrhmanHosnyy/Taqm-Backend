@@ -1,5 +1,9 @@
+
+﻿using Microsoft.AspNetCore.Identity;
+
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -35,6 +39,14 @@ namespace Taqm.Infrastructure
                 "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 options.User.RequireUniqueEmail = true;
                 options.SignIn.RequireConfirmedEmail = true;
+
+            }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
+            //  Email Authentication
+            var emailSettings = new EmailSettings();
+            configuration.GetSection(nameof(emailSettings)).Bind(emailSettings);
+            services.AddSingleton(emailSettings);
+            return services;
 
             })
                 .AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
@@ -80,6 +92,7 @@ namespace Taqm.Infrastructure
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Taqm Project", Version = "v1" });
                 c.EnableAnnotations();
+
 
                 c.AddSecurityDefinition(JwtBearerDefaults.AuthenticationScheme, new OpenApiSecurityScheme
                 {

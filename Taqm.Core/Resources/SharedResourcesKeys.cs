@@ -19,6 +19,7 @@
         public const string DeleteFailed = "DeleteFailed";
         public const string PasswordChanged = "PasswordChanged";
         public const string SendEmailFailed = "SendEmailFailed";
+
         public const string TryToRegisterAgain = "TryToRegisterAgain";
         public const string FaildToAddUser = "FaildToAddUser";
         public const string EmailIsExist = "EmailIsExist";
@@ -32,6 +33,7 @@
         public const string EmailIsNotExist = "EmailIsNotExist";
         public const string IncorrectPassword = "IncorrectPassword";
         public const string FailedToRevoke = "FailedToRevoke";
+
 
 
     }
