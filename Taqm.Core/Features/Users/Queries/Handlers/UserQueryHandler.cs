@@ -11,7 +11,8 @@ namespace Taqm.Core.Features.Users.Queries.Handlers
 {
     public class UserQueryHandler : ResponseHandler,
         IRequestHandler<GetUserByIdQuery, Response<GetUserByIdResponse>>,
-        IRequestHandler<GetUserByIdIncludingPostsQuery, Response<GetUserByIdIncludingPostsResponse>>
+        IRequestHandler<GetUserByIdIncludingPostsQuery, Response<GetUserByIdIncludingPostsResponse>>,
+        IRequestHandler<GetUsersListQuery, Response<List<GetUserByIdIncludingPostsResponse>>>
     {
         #region Fields
         public readonly IStringLocalizer<SharedResources> _stringLocalizer;
@@ -48,6 +49,13 @@ namespace Taqm.Core.Features.Users.Queries.Handlers
             var result = _mapper.Map<GetUserByIdIncludingPostsResponse>(user);
 
             return Success(result);
+        }
+
+        public async Task<Response<List<GetUserByIdIncludingPostsResponse>>> Handle(GetUsersListQuery request, CancellationToken cancellationToken)
+        {
+            var userList = await _userService.GetAllIncludingPostsAsync();
+            var mappedUserList = _mapper.Map<List<GetUserByIdIncludingPostsResponse>>(userList);
+            return Success(mappedUserList);
         }
         #endregion
 

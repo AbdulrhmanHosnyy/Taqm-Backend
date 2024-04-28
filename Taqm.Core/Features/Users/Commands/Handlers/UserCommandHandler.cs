@@ -54,7 +54,7 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
                 case "Failed":
                     return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.TryToRegisterAgain]);
                 case "Success":
-                    return Success<string>("");
+                    return Success("");
                 default:
                     return BadRequest<string>(result);
             }

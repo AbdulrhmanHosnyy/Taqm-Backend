@@ -66,7 +66,7 @@ namespace Taqm.Service.Services
                     </html>";
 
                 //  Send Confirm Url
-                await _emailService.SendEmail(user.Email, "Confirm Email", message);
+                await _emailService.SendEmailAsync(user.Email, "Confirm Email", message);
                 await transaction.CommitAsync();
                 return "Success";
             }
@@ -75,6 +75,14 @@ namespace Taqm.Service.Services
                 await transaction.RollbackAsync();
                 return "Failed";
             }
+        }
+        public async Task<List<User>> GetAllIncludingPostsAsync()
+        {
+            return await _userManager.Users
+            .AsNoTracking()
+            .AsQueryable()
+            .Include(u => u.Posts)
+            .ToListAsync();
         }
         public async Task<User> GetUserByIdAsync(int id) => await _userManager.FindByIdAsync(id.ToString());
         public async Task<User> GetUserByIdIncludingPostsAsync(int id)
@@ -153,7 +161,7 @@ namespace Taqm.Service.Services
                     </html>";
 
                 //  Send Confirm Url
-                await _emailService.SendEmail(user.Email, "Reset Password Token", message);
+                await _emailService.SendEmailAsync(user.Email, "Reset Password Token", message);
                 await transaction.CommitAsync();
                 return "Success";
             }

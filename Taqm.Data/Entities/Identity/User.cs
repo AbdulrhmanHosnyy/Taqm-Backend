@@ -8,6 +8,7 @@ namespace Taqm.Data.Entities.Identity
         public User()
         {
             Posts = new HashSet<Post>();
+            UserRefreshTokens = new HashSet<UserRefreshToken>();
         }
 
         public string FirstName { get; set; } = "";
@@ -21,7 +22,7 @@ namespace Taqm.Data.Entities.Identity
         public DateTime LastSeen { get; set; }
         public float? Weight { get; set; }
         public float? Height { get; set; }
-        public ICollection<Post> Posts { get; set; }
-
+        public ICollection<Post>? Posts { get; set; }
+        public virtual ICollection<UserRefreshToken>? UserRefreshTokens { get; set; }
     }
 }

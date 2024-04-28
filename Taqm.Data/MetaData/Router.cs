@@ -19,6 +19,7 @@
         {
             public const string prefix = Rule + "User/";
             public const string Create = prefix + "Create";
+            public const string GetAll = prefix + "GetAll";
             public const string GetById = prefix + "GetById/" + SingleRoute;
             public const string GetByIdIncludingPosts = prefix + "GetByIdIncludingPosts/" + SingleRoute;
             public const string Update = prefix + "Update";
@@ -37,6 +38,9 @@
             public const string ConfirmEmail = prefix + "ConfirmEmail";
             public const string ResetPasswordToken = prefix + "ResetPasswordToken";
             public const string ResetPassword = prefix + "ResetPassword";
+            public const string SignIn = prefix + "SignIn";
+            public const string CheckRefreshToken = prefix + "CheckRefreshToken";
+            public const string RevokeToken = prefix + "RevokeToken";
         }
         #endregion
 

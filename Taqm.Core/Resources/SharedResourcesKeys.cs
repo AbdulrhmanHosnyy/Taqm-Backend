@@ -29,6 +29,9 @@
         public const string FailedToSendResetPasswordLink = "FailedToSendResetPasswordLink";
         public const string ResetLinkWasSent = "ResetLinkWasSent";
         public const string FailedToResetPassword = "FailedToResetPassword";
+        public const string EmailIsNotExist = "EmailIsNotExist";
+        public const string IncorrectPassword = "IncorrectPassword";
+        public const string FailedToRevoke = "FailedToRevoke";
 
 
     }

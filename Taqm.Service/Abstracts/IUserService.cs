@@ -6,6 +6,7 @@ namespace Taqm.Service.Abstracts
     public interface IUserService
     {
         public Task<string> CreateAsync(User user, string password);
+        public Task<List<User>> GetAllIncludingPostsAsync();
         public Task<User> GetUserByIdAsync(int id);
         public Task<User> GetUserByIdIncludingPostsAsync(int id);
         public Task<string> UpdateAsync(User user, IFormFile file);
