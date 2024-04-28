@@ -42,11 +42,6 @@
             public const string CheckRefreshToken = prefix + "CheckRefreshToken";
             public const string RevokeToken = prefix + "RevokeToken";
         }
-        public static class EmailRouting
-        {
-            public const string prefix = Rule + "Email/";
-            public const string SendEmail = prefix + "SendEmail";
-        }
         #endregion
 
 
