@@ -19,7 +19,7 @@ namespace Taqm.Service.Services
         #endregion
 
         #region Methods
-        public async Task<string> SendEmail(string email, string Subject, string message)
+        public async Task<string> SendEmailAsync(string email, string Subject, string message)
         {
             try
             {

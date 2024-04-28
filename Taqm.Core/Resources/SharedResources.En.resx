@@ -135,6 +135,9 @@
   <data name="EmailIsExist" xml:space="preserve">
     <value>Email is already exist</value>
   </data>
+  <data name="EmailIsNotExist" xml:space="preserve">
+    <value>This Email is not exist!</value>
+  </data>
   <data name="ErrorConfirmEmail" xml:space="preserve">
     <value>Error while confirming email</value>
   </data>
@@ -144,11 +147,17 @@
   <data name="FailedToResetPassword" xml:space="preserve">
     <value>Failed To Reset Password</value>
   </data>
+  <data name="FailedToRevoke" xml:space="preserve">
+    <value>Failed To Revoke</value>
+  </data>
   <data name="FailedToSendResetPasswordLink" xml:space="preserve">
     <value>Failed to send reset password link</value>
   </data>
   <data name="FailedToUploadImage" xml:space="preserve">
     <value>Failed to upload the image</value>
+  </data>
+  <data name="IncorrectPassword" xml:space="preserve">
+    <value>Wrong Password</value>
   </data>
   <data name="MatchEmail" xml:space="preserve">
     <value>Email is not in a valid format "Example_1@gmail.com"</value>

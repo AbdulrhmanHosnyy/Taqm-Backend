@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using Taqm.Api.Bases;
 using Taqm.Core.Features.Users.Commands.Models;
@@ -15,9 +16,15 @@ namespace Taqm.Api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateUserCommand createUserCommand) =>
             NewResult(await Mediator.Send(createUserCommand));
 
+        [Authorize]
+        [HttpGet(Router.UserRouting.GetAll)]
+        public async Task<IActionResult> GetAll() =>
+            NewResult(await Mediator.Send(new GetUsersListQuery()));
+
         [HttpGet(Router.UserRouting.GetById)]
         public async Task<IActionResult> GetById(int id) =>
             NewResult(await Mediator.Send(new GetUserByIdQuery(id)));
+
         [HttpGet(Router.UserRouting.GetByIdIncludingPosts)]
         public async Task<IActionResult> GetByIdIncludingPosts(int id) =>
             NewResult(await Mediator.Send(new GetUserByIdIncludingPostsQuery(id)));
