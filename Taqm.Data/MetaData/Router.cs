@@ -42,6 +42,19 @@
             public const string CheckRefreshToken = prefix + "CheckRefreshToken";
             public const string RevokeToken = prefix + "RevokeToken";
         }
+        public static class AuthorizationRouting
+        {
+            public const string prefix = Rule + "Authorization/";
+            public const string Create = prefix + "Role/Create";
+            public const string Update = prefix + "Role/Update";
+            public const string Delete = prefix + "Role/Delete/" + SingleRoute;
+            public const string GetAllRoles = prefix + "Role/GetAllRoles";
+            public const string GetRoleById = prefix + "Role/GetRoleById/" + SingleRoute;
+            public const string ManageUserRoles = prefix + "Role/ManageUserRoles/" + SingleRoute;
+            public const string UpdateUserRoles = prefix + "Role/UpdateUserRoles";
+            public const string ManageUserClaims = prefix + "Role/ManageUserClaims/" + SingleRoute;
+            public const string UpdateUserClaims = prefix + "Role/UpdateUserClaims";
+        }
         #endregion
 
 

@@ -32,8 +32,5 @@ namespace Taqm.Core.Bases
             Data = data;
         }
         #endregion
-
-
-
     }
 }

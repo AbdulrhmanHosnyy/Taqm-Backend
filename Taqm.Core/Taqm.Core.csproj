@@ -16,6 +16,10 @@
 
     <Folder Include="Features\Authentication\Queries\Responses\" />
 
+    <Folder Include="Features\Authorization\Claims\Commands\Validators\" />
+
+    <Folder Include="Features\Authorization\Claims\Queries\Responses\" />
+
     <Folder Include="Features\Emails\Queries\Handlers\" />
     <Folder Include="Features\Emails\Queries\Models\" />
     <Folder Include="Features\Emails\Queries\Responses\" />

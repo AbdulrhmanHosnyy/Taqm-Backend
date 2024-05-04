@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
@@ -6,8 +7,10 @@ using Microsoft.EntityFrameworkCore;
 using System.Globalization;
 using Taqm.Core;
 using Taqm.Core.Middlewares;
+using Taqm.Data.Entities.Identity;
 using Taqm.Infrastructure;
 using Taqm.Infrastructure.Data;
+using Taqm.Infrastructure.Seeders;
 using Taqm.Service;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -78,6 +81,16 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+
+#region SeedingDate
+using (var scope = app.Services.CreateScope())
+{
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<Role>>();
+    await RoleSeeder.SeedAsync(roleManager);
+    await UserSeeder.SeedAsync(userManager);
+}
+#endregion
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

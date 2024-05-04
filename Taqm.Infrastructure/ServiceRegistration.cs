@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -15,7 +15,7 @@ namespace Taqm.Infrastructure
     {
         public static IServiceCollection AddServiceRegistration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddIdentity<User, IdentityRole<int>>(options =>
+            services.AddIdentity<User, Role>(options =>
             {
                 // Password settings.
                 options.Password.RequireDigit = true;
@@ -103,6 +103,15 @@ namespace Taqm.Infrastructure
                 },
                 Array.Empty<string>()
                 }
+                });
+            });
+
+            //  Add Authorization policies
+            services.AddAuthorization(option =>
+            {
+                option.AddPolicy("GetPosts", policy =>
+                {
+                    policy.RequireClaim("Get Posts", "true");
                 });
             });
             return services;

@@ -67,6 +67,8 @@ namespace Taqm.Service.Services
 
                 //  Send Confirm Url
                 await _emailService.SendEmailAsync(user.Email, "Confirm Email", message);
+                //  Adding Role
+                await _userManager.AddToRoleAsync(user, "User");
                 await transaction.CommitAsync();
                 return "Success";
             }
