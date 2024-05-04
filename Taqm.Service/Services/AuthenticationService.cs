@@ -97,14 +97,18 @@ namespace Taqm.Service.Services
         }
         private async Task<List<Claim>> GetClaimsAsync(User user)
         {
+            //  Adding Claims
             var claims = new List<Claim>
             {
-                new Claim(nameof(UserClaims.Id), user.Id.ToString()),
+                new Claim(nameof(Data.Helpers.UserClaims.Id), user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Email),
             };
-
             var userClaims = await _userManager.GetClaimsAsync(user);
             claims.AddRange(userClaims);
+
+            //  Adding Roles
+            var roles = await _userManager.GetRolesAsync(user);
+            foreach (var role in roles) claims.Add(new Claim(ClaimTypes.Role, role));
 
             return claims;
         }
@@ -159,7 +163,6 @@ namespace Taqm.Service.Services
 
             return response;
         }
-
         public async Task<bool> RevokeTokenAsync(string token)
         {
             var user = await _userManager.Users.SingleOrDefaultAsync(u => u.UserRefreshTokens.Any(t => t.Token == token));

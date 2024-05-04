@@ -16,7 +16,7 @@ namespace Taqm.Api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateUserCommand createUserCommand) =>
             NewResult(await Mediator.Send(createUserCommand));
 
-        [Authorize]
+        [Authorize(Policy = "GetPosts")]
         [HttpGet(Router.UserRouting.GetAll)]
         public async Task<IActionResult> GetAll() =>
             NewResult(await Mediator.Send(new GetUsersListQuery()));

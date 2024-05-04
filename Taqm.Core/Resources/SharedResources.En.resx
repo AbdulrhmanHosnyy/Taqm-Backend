@@ -192,25 +192,55 @@
   <data name="PasswordChanged" xml:space="preserve">
     <value>Password Changed Successfully</value>
   </data>
-
   <data name="SendEmailFailed" xml:space="preserve">
     <value>Failed to send email</value>
   </data>
-
   <data name="ResetLinkWasSent" xml:space="preserve">
     <value>Reset password link is sent</value>
-  </data>
-  <data name="SendEmailFailed" xml:space="preserve">
-    <value>Failed to send email</value>
   </data>
   <data name="TryToRegisterAgain" xml:space="preserve">
     <value>Try to register again</value>
   </data>
-
   <data name="Updated" xml:space="preserve">
     <value>Updated Successfully</value>
   </data>
   <data name="UpdateFailed" xml:space="preserve">
     <value>Update Failed</value>
+  </data>
+  <data name="ExistedRole" xml:space="preserve">
+    <value>This Role is exist</value>
+  </data>
+  <data name="FailedToAddRole" xml:space="preserve">
+    <value>Failed to add Role</value>
+  </data>
+  <data name="RoleAddedSuccessfully" xml:space="preserve">
+    <value>Role has been added successfully</value>
+  </data>
+  <data name="RoleIsUsed" xml:space="preserve">
+    <value>This Role is used</value>
+  </data>
+  <data name="RoleNotExist" xml:space="preserve">
+    <value>No Role Exists with this id</value>
+  </data>
+  <data name="UserIsNotFound" xml:space="preserve">
+    <value>User Is not found</value>
+  </data>
+  <data name="FailedToAddNewRoles" xml:space="preserve">
+    <value>Failed to Add new Roles</value>
+  </data>
+  <data name="FailedToRemoveOldRoles" xml:space="preserve">
+    <value>Failed to Remove old Roles</value>
+  </data>
+  <data name="FailedToUpdateUserRoles" xml:space="preserve">
+    <value>Failed to Update User Roles</value>
+  </data>
+  <data name="FailedToAddNewClaims" xml:space="preserve">
+    <value>Failed to add new Claims</value>
+  </data>
+  <data name="FailedToRemoveOldClaims" xml:space="preserve">
+    <value>Failed to remove old Claims</value>
+  </data>
+  <data name="FailedToUpdateUserClaims" xml:space="preserve">
+    <value>Failed to update user Claims</value>
   </data>
 </root>

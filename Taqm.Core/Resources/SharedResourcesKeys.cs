@@ -19,7 +19,6 @@
         public const string DeleteFailed = "DeleteFailed";
         public const string PasswordChanged = "PasswordChanged";
         public const string SendEmailFailed = "SendEmailFailed";
-
         public const string TryToRegisterAgain = "TryToRegisterAgain";
         public const string FaildToAddUser = "FaildToAddUser";
         public const string EmailIsExist = "EmailIsExist";
@@ -33,7 +32,17 @@
         public const string EmailIsNotExist = "EmailIsNotExist";
         public const string IncorrectPassword = "IncorrectPassword";
         public const string FailedToRevoke = "FailedToRevoke";
-
-
+        public const string ExistedRole = "ExistedRole";
+        public const string FailedToAddRole = "FailedToAddRole";
+        public const string RoleAddedSuccessfully = "RoleAddedSuccessfully";
+        public const string RoleIsUsed = "RoleIsUsed";
+        public const string RoleNotExist = "RoleNotExist";
+        public const string UserIsNotFound = "UserIsNotFound";
+        public const string FailedToUpdateUserRoles = "FailedToUpdateUserRoles";
+        public const string FailedToAddNewRoles = "FailedToAddNewRoles";
+        public const string FailedToRemoveOldRoles = "FailedToRemoveOldRoles";
+        public const string FailedToUpdateUserClaims = "FailedToUpdateUserClaims";
+        public const string FailedToAddNewClaims = "FailedToAddNewClaims";
+        public const string FailedToRemoveOldClaims = "FailedToRemoveOldClaims";
     }
 }

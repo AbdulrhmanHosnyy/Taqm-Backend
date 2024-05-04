@@ -59,7 +59,6 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
                     return BadRequest<string>(result);
             }
         }
-
         public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             //  Check user existance
@@ -80,7 +79,6 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
             }
             return Success<string>(_stringLocalizer[SharedResourcesKeys.Updated]);
         }
-
         public async Task<Response<string>> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {
             var deleteResult = await _userService.DeleteAsync(request.Id);
@@ -93,7 +91,6 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
                 default: return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.DeleteFailed]);
             }
         }
-
         public async Task<Response<string>> Handle(ChangeUserPasswordCommand request, CancellationToken cancellationToken)
         {
             var changePasswordResult = await _userService.ChangePasswordAsync(request.Id, request.CurrentPassword, request.ConfirmPassword);
@@ -105,7 +102,6 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
                 default: return BadRequest<string>(changePasswordResult); ;
             }
         }
-
         public async Task<Response<string>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
         {
             // Create User
