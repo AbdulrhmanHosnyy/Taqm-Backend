@@ -7,6 +7,8 @@ namespace Taqm.Core.Mappings.Posts
         public PostProfile()
         {
             GetPostByIdMapping();
+            CreatePostCommandMapping();
+            UpdatePostCommandMapping();
         }
     }
 }

@@ -7,7 +7,9 @@ namespace Taqm.Core.Mappings.Posts
     {
         public void GetPostByIdMapping()
         {
-            CreateMap<Post, GetPostByIdResponse>();
+            CreateMap<Post, GetPostByIdResponse>()
+                .ForMember(dest => dest.SellerLocation, opt => opt.MapFrom(src => $"{src.User.City} {src.User.Region}"))
+                .ForMember(dest => dest.UserFullName, opt => opt.MapFrom(src => $"{src.User.FirstName} {src.User.LastName}"));
         }
     }
 }

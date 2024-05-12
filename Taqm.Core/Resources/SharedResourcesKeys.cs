@@ -44,5 +44,8 @@
         public const string FailedToUpdateUserClaims = "FailedToUpdateUserClaims";
         public const string FailedToAddNewClaims = "FailedToAddNewClaims";
         public const string FailedToRemoveOldClaims = "FailedToRemoveOldClaims";
+        public const string FailedToCreate = "FailedToCreate";
+        public const string FailedToRenew = "FailedToRenew";
+        public const string RenewedSuccessfully = "RenewedSuccessfully";
     }
 }

@@ -15,5 +15,8 @@
         public string? ProductSize { get; set; }
         public float? ProductWidth { get; set; }
         public float? ProductHeight { get; set; }
+        public string? SellerLocation { get; set; }
+        public int UserId { get; set; }
+        public string UserFullName { get; set; }
     }
 }

@@ -61,7 +61,7 @@ namespace Taqm.Infrastructure.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async virtual Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
+        public virtual async Task<T> GetByIdAsync(int id) => await _context.Set<T>().FindAsync(id);
 
         public virtual async Task SaveChangesAsync() => await _context.SaveChangesAsync();
 
@@ -95,11 +95,10 @@ namespace Taqm.Infrastructure.Repositories
             return await query.SingleOrDefaultAsync(criteria);
         }
 
-        public virtual async Task<List<T>> FindAllAsync(Expression<Func<T, bool>> criteria,
+        public virtual IQueryable<T> FindAllAsync(IQueryable<T> query, Expression<Func<T, bool>> filter,
             Expression<Func<T, object>> orderBy = null, string orderByDirection = OrderBy.Ascending)
         {
-            IQueryable<T> query = _context.Set<T>().Where(criteria);
-
+            query = query.Where(filter);
             if (orderBy != null)
             {
                 if (orderByDirection == OrderBy.Ascending)
@@ -108,7 +107,7 @@ namespace Taqm.Infrastructure.Repositories
                     query = query.OrderByDescending(orderBy);
             }
 
-            return await query.ToListAsync();
+            return query;
         }
         #endregion
 

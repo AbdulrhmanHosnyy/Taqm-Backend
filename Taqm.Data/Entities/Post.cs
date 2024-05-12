@@ -9,7 +9,7 @@ namespace Taqm.Data.Entities
         public string ProductImage { get; set; }
         public string ProductDescription { get; set; }
         public string? ProductCategory { get; set; }
-        public string? ProductPrice { get; set; }
+        public decimal ProductPrice { get; set; }
         public string? ProductCondition { get; set; }
         public string? ProductGender { get; set; }
         public string? ProductSeason { get; set; }

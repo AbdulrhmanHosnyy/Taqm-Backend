@@ -243,4 +243,13 @@
   <data name="FailedToUpdateUserClaims" xml:space="preserve">
     <value>Failed to update user Claims</value>
   </data>
+  <data name="FailedToCreate" xml:space="preserve">
+    <value>Failed To Create</value>
+  </data>
+  <data name="FailedToRenew" xml:space="preserve">
+    <value>Faile to renew post</value>
+  </data>
+  <data name="RenewedSuccessfully" xml:space="preserve">
+    <value>Post Renewed Successfully</value>
+  </data>
 </root>
