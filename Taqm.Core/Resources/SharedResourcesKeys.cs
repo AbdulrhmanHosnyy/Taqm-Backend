@@ -47,5 +47,13 @@
         public const string FailedToCreate = "FailedToCreate";
         public const string FailedToRenew = "FailedToRenew";
         public const string RenewedSuccessfully = "RenewedSuccessfully";
+        public const string RecipientNotFound = "RecipientNotFound";
+        public const string SenderNotFound = "SenderNotFound";
+        public const string MessageSentSuccessfully = "MessageSentSuccessfully";
+        public const string FailedToSendMessage = "FailedToSendMessage";
+        public const string FailedToUpdate = "FailedToUpdate";
+        public const string MessageUpdatedSuccessfully = "MessageUpdatedSuccessfully";
+        public const string SendEmailSuccess = "SendEmailSuccess";
+        public const string RegisteredSuccessfully = "RegisteredSuccessfully";
     }
 }

@@ -16,7 +16,6 @@ namespace Taqm.Core.Features.Authentication.Commands.Validators
         {
             _stringLocalizer = stringLocalizer;
             ApplyValidationRules();
-            ApplyCustomValidationRules();
         }
         #endregion
 
@@ -35,13 +34,6 @@ namespace Taqm.Core.Features.Authentication.Commands.Validators
             RuleFor(u => u.Email)
                .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
                .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
-
-            RuleFor(u => u.Token)
-               .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
-               .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
-        }
-        public void ApplyCustomValidationRules()
-        {
         }
         #endregion
     }

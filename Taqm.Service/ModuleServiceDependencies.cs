@@ -14,6 +14,7 @@ namespace Taqm.Service
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<IFileService, FileService>();
             services.AddTransient<IAuthorizationService, AuthorizationService>();
+            services.AddTransient<IChatService, ChatService>();
 
 
             return services;

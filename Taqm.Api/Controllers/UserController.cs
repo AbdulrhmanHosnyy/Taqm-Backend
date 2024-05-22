@@ -16,6 +16,10 @@ namespace Taqm.Api.Controllers
         public async Task<IActionResult> Create([FromBody] CreateUserCommand createUserCommand) =>
             NewResult(await Mediator.Send(createUserCommand));
 
+        [HttpGet(Router.UserRouting.ConfirmCreateUserEmail)]
+        public async Task<IActionResult> ConfirmCreateUserEmail([FromQuery] ConfirmCreateUserEmailQuery confirmCreateUserEmailQuery) =>
+            NewResult(await Mediator.Send(confirmCreateUserEmailQuery));
+
         [Authorize(Policy = "GetPosts")]
         [HttpGet(Router.UserRouting.GetAll)]
         public async Task<IActionResult> GetAll() =>

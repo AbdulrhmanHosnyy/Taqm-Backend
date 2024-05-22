@@ -35,14 +35,13 @@ namespace Taqm.Service.Services
         public async Task<string> CreateAsync(User user, string password)
         {
             var transaction = await _appDbContext.Database.BeginTransactionAsync();
-
             try
             {
-                //  Cheack email existance
+                //  Check email existance
                 var userByEmail = await _userManager.FindByEmailAsync(user.Email);
                 if (userByEmail is not null && userByEmail.EmailConfirmed) return "EmailIsExist";
 
-                //  If not Exist Create user
+                //  Check If user exist but email is not confirmed
                 if (userByEmail is not null && !userByEmail.EmailConfirmed) return "ConfirmEmail";
 
                 //  Create User
@@ -50,10 +49,10 @@ namespace Taqm.Service.Services
                 if (!result.Succeeded) return string.Join(",", result.Errors.Select(e => e.Description).ToList());
 
                 //  Confirm Email
-                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var emailConfirmationToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var requestAccessor = _contextAccessor.HttpContext.Request;
                 var returnUrl = requestAccessor.Scheme + "://" + requestAccessor.Host +
-                    _urlHelper.Action("ConfirmEmail", "Authentication", new { UserId = user.Id, Code = code });
+                    _urlHelper.Action("ConfirmCreateUserEmail", "User", new { UserId = user.Id, EmailConfirmationToken = emailConfirmationToken });
                 var message = $@"
                     <html>
                     <head>
@@ -67,8 +66,10 @@ namespace Taqm.Service.Services
 
                 //  Send Confirm Url
                 await _emailService.SendEmailAsync(user.Email, "Confirm Email", message);
+
                 //  Adding Role
                 await _userManager.AddToRoleAsync(user, "User");
+
                 await transaction.CommitAsync();
                 return "Success";
             }
@@ -77,6 +78,15 @@ namespace Taqm.Service.Services
                 await transaction.RollbackAsync();
                 return "Failed";
             }
+        }
+        public async Task<string> ConfirmCreateUserEmailAsync(int userId, string emailConfirmationToken)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
+
+            if (user is null || emailConfirmationToken is null) return "ErrorConfirmEmail";
+
+            var confirmEmail = await _userManager.ConfirmEmailAsync(user, emailConfirmationToken);
+            return !confirmEmail.Succeeded ? "ErrorConfirmEmail" : "Success";
         }
         public async Task<List<User>> GetAllIncludingPostsAsync()
         {

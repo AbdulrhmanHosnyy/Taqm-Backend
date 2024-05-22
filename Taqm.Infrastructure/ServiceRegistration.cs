@@ -114,6 +114,7 @@ namespace Taqm.Infrastructure
                     policy.RequireClaim("Get Posts", "true");
                 });
             });
+
             return services;
         }
     }
