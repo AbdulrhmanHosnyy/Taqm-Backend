@@ -71,19 +71,13 @@ namespace Taqm.Infrastructure.Repositories
 
         public virtual async Task CommitAsync() => await _context.Database.CommitTransactionAsync();
 
-        public virtual IQueryable<T> GetTableAsTracking() => _context.Set<T>().AsQueryable();
+        public virtual IQueryable<T> GetTableAsTracking() => _context.Set<T>().AsTracking().AsQueryable();
 
         public virtual IQueryable<T> GetTableNoTracking() => _context.Set<T>().AsNoTracking().AsQueryable();
 
-        public virtual async Task<int> CountAsync()
-        {
-            return await _context.Set<T>().CountAsync();
-        }
+        public virtual async Task<int> CountAsync() => await _context.Set<T>().CountAsync();
 
-        public virtual async Task<int> CountAsync(Expression<Func<T, bool>> criteria)
-        {
-            return await _context.Set<T>().CountAsync(criteria);
-        }
+        public virtual async Task<int> CountAsync(Expression<Func<T, bool>> criteria) => await _context.Set<T>().CountAsync(criteria);
 
         public virtual async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
         {
@@ -95,7 +89,7 @@ namespace Taqm.Infrastructure.Repositories
             return await query.SingleOrDefaultAsync(criteria);
         }
 
-        public virtual IQueryable<T> FindAllAsync(IQueryable<T> query, Expression<Func<T, bool>> filter,
+        public virtual IQueryable<T> FindAllAsQuerable(IQueryable<T> query, Expression<Func<T, bool>> filter,
             Expression<Func<T, object>> orderBy = null, string orderByDirection = OrderBy.Ascending)
         {
             query = query.Where(filter);

@@ -16,15 +16,12 @@ namespace Taqm.Core.Features.Authentication.Commands.Validators
         {
             _stringLocalizer = stringLocalizer;
             ApplyValidationRules();
-            ApplyCustomValidationRules();
         }
         #endregion
 
         #region Methods
         public void ApplyValidationRules()
         {
-
-
             RuleFor(u => u.Email)
                .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
                .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
@@ -34,9 +31,6 @@ namespace Taqm.Core.Features.Authentication.Commands.Validators
                 .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull])
                 .MinimumLength(6).WithMessage(_stringLocalizer[SharedResourcesKeys.MinLength6])
                 .MaximumLength(16).WithMessage(_stringLocalizer[SharedResourcesKeys.MaxLength16]);
-        }
-        public void ApplyCustomValidationRules()
-        {
         }
         #endregion
     }

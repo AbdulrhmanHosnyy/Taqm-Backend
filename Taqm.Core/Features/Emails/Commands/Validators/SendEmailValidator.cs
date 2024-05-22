@@ -9,7 +9,6 @@ namespace Taqm.Core.Features.Emails.Commands.Validators
     {
         #region Fields
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
-
         #endregion
 
         #region Constructors
@@ -17,7 +16,6 @@ namespace Taqm.Core.Features.Emails.Commands.Validators
         {
             _stringLocalizer = stringLocalizer;
             ApplyValidationRules();
-            ApplyCustomValidationRules();
         }
         #endregion
 
@@ -35,10 +33,6 @@ namespace Taqm.Core.Features.Emails.Commands.Validators
             RuleFor(s => s.Message)
                  .NotEmpty().WithMessage(_stringLocalizer[SharedResourcesKeys.NotEmpty])
                  .NotNull().WithMessage(_stringLocalizer[SharedResourcesKeys.NotNull]);
-        }
-        public void ApplyCustomValidationRules()
-        {
-
         }
         #endregion
     }

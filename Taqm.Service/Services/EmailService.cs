@@ -31,8 +31,7 @@ namespace Taqm.Service.Services
                     {
                         HtmlBody = $"{message}",
 
-                        TextBody = "wellcome",
-
+                        TextBody = "Wellcome",
                     };
                     var msg = new MimeMessage
                     {
@@ -40,8 +39,7 @@ namespace Taqm.Service.Services
                     };
                     msg.From.Add(new MailboxAddress(_emailSettings.MailBoxName, _emailSettings.MailBoxAddress));
                     msg.To.Add(new MailboxAddress("User", email));
-                    //message.Subject = reason == null ? "No Submitted" : reason;
-                    msg.Subject = Subject == null ? "No Submitted" : Subject;
+                    msg.Subject = Subject == null ? "Not Submitted" : Subject;
                     await client.SendAsync(msg);
                     await client.DisconnectAsync(true);
                 }

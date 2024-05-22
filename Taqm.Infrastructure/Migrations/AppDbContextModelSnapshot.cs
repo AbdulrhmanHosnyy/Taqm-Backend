@@ -125,6 +125,62 @@ namespace Taqm.Infrastructure.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.ChatRoom", b =>
+                {
+                    b.Property<int>("ChatRoomId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ChatRoomId"));
+
+                    b.HasKey("ChatRoomId");
+
+                    b.ToTable("ChatRooms");
+                });
+
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.Message", b =>
+                {
+                    b.Property<int>("MessageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MessageId"));
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MessageContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("MessageType")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("SentOn")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("MessageId");
+
+                    b.HasIndex("ChatRoomId");
+
+                    b.ToTable("Messages");
+                });
+
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.UserChatRoom", b =>
+                {
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ChatRoomId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "ChatRoomId");
+
+                    b.HasIndex("ChatRoomId");
+
+                    b.ToTable("UserChatRooms");
+                });
+
             modelBuilder.Entity("Taqm.Data.Entities.Identity.Role", b =>
                 {
                     b.Property<int>("Id")
@@ -177,6 +233,7 @@ namespace Taqm.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Email")
+                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -270,20 +327,25 @@ namespace Taqm.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ProductCategory")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ProductColor")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ProductCondition")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ProductDescription")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("ProductGender")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<float?>("ProductHeight")
                         .HasColumnType("real");
@@ -296,10 +358,12 @@ namespace Taqm.Infrastructure.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("ProductSeason")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("ProductSize")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<float?>("ProductWidth")
                         .HasColumnType("real");
@@ -365,6 +429,36 @@ namespace Taqm.Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.Message", b =>
+                {
+                    b.HasOne("Taqm.Data.Entities.Chat.ChatRoom", "ChatRoom")
+                        .WithMany("Messages")
+                        .HasForeignKey("ChatRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChatRoom");
+                });
+
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.UserChatRoom", b =>
+                {
+                    b.HasOne("Taqm.Data.Entities.Chat.ChatRoom", "ChatRoom")
+                        .WithMany("UserChatRooms")
+                        .HasForeignKey("ChatRoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Taqm.Data.Entities.Identity.User", "User")
+                        .WithMany("UserChatRooms")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ChatRoom");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Taqm.Data.Entities.Identity.User", b =>
                 {
                     b.OwnsMany("Taqm.Data.Entities.Identity.UserRefreshToken", "UserRefreshTokens", b1 =>
@@ -413,9 +507,18 @@ namespace Taqm.Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Taqm.Data.Entities.Chat.ChatRoom", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("UserChatRooms");
+                });
+
             modelBuilder.Entity("Taqm.Data.Entities.Identity.User", b =>
                 {
                     b.Navigation("Posts");
+
+                    b.Navigation("UserChatRooms");
                 });
 #pragma warning restore 612, 618
         }

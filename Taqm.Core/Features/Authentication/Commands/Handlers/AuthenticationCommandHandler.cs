@@ -1,10 +1,9 @@
 ﻿using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Localization;
 using Taqm.Core.Bases;
 using Taqm.Core.Features.Authentication.Commands.Models;
+using Taqm.Core.Features.Users.Commands.Models;
 using Taqm.Core.Resources;
-using Taqm.Data.Entities.Identity;
 using Taqm.Data.Responses;
 using Taqm.Service.Abstracts;
 
@@ -18,24 +17,35 @@ namespace Taqm.Core.Features.Authentication.Commands.Handlers
         #region Fields
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
         private readonly IAuthenticationService _authenticationService;
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
         #endregion
 
         #region Constructors
         public AuthenticationCommandHandler(IStringLocalizer<SharedResources> stringLocalizer,
-            IAuthenticationService authenticationService,
-            UserManager<User> userManager,
-            SignInManager<User> signInManager) : base(stringLocalizer)
+            IAuthenticationService authenticationService) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _authenticationService = authenticationService;
-            _userManager = userManager;
-            _signInManager = signInManager;
         }
         #endregion
 
         #region Handlers
+        public async Task<Response<JwtAuthResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
+        {
+            var response = await _authenticationService.SignInAsyns(request.Email, request.Password);
+            switch (response.Message)
+            {
+                case "EmailNotExist":
+                    return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.EmailIsNotExist]);
+                case "ConfirmEmail":
+                    return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.ConfirmEmail]);
+                case "IncorrectPassword":
+                    return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.IncorrectPassword]);
+                case "Failed":
+                    return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.IncorrectPassword]);
+                default:
+                    return !response.IsAuthenticated ? BadRequest<JwtAuthResponse>(response.Message!) : Success(response);
+            }
+        }
         public async Task<Response<string>> Handle(ResetPasswordCommand request, CancellationToken cancellationToken)
         {
             var resetPaswordResult =
@@ -53,22 +63,6 @@ namespace Taqm.Core.Features.Authentication.Commands.Handlers
                     return BadRequest<string>(resetPaswordResult);
             }
         }
-        public async Task<Response<JwtAuthResponse>> Handle(SignInCommand request, CancellationToken cancellationToken)
-        {
-            //  Check user existance
-            var user = await _userManager.FindByEmailAsync(request.Email);
-            if (user is null) return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.EmailIsNotExist]);
-
-            //  SingIn process
-            var signInResult = _signInManager.CheckPasswordSignInAsync(user, request.Password, false);
-            if (!signInResult.IsCompletedSuccessfully) return BadRequest<JwtAuthResponse>(_stringLocalizer[SharedResourcesKeys.IncorrectPassword]);
-
-            //  Response Object
-            var result = await _authenticationService.GetJWTTokenAsync(user);
-            if (!result.IsAuthenticated) return BadRequest<JwtAuthResponse>(result.Message);
-
-            return Success(result);
-        }
         public async Task<Response<bool>> Handle(RevokeTokenCommand request, CancellationToken cancellationToken)
         {
             var result = await _authenticationService.RevokeTokenAsync(request.Token);
@@ -76,6 +70,10 @@ namespace Taqm.Core.Features.Authentication.Commands.Handlers
                 return BadRequest<bool>(_stringLocalizer[SharedResourcesKeys.FailedToRevoke]);
             return Success(result);
 
+        }
+        public Task<Response<string>> Handle(ForgetPasswordCommand request, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

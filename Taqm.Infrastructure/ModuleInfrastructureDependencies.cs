@@ -10,6 +10,9 @@ namespace Taqm.Infrastructure
         {
             services.AddTransient(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<IMessageRepository, MessageRepository>();
+            services.AddTransient<IChatRoomRepository, ChatRoomRepository>();
+            services.AddTransient<IUserChatRoomRepository, UserChatRoomRepository>();
 
             return services;
         }

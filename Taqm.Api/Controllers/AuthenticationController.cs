@@ -10,25 +10,14 @@ namespace Taqm.Api.Controllers
     public class AuthenticationController : AppControllerBase
     {
         #region Operations
-        [HttpGet(Router.AuthenticationRouting.ConfirmEmail)]
-        public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailQuery confirmEmailQuery) =>
-            NewResult(await Mediator.Send(confirmEmailQuery));
-
-        [HttpGet(Router.AuthenticationRouting.ResetPasswordToken)]
-        public async Task<IActionResult> ResetPasswordToken([FromQuery] ResetPasswordTokenQuery resetPasswordTokenQuery) =>
-            NewResult(await Mediator.Send(resetPasswordTokenQuery));
-
-        [HttpPost(Router.AuthenticationRouting.ResetPassword)]
-        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand resetPasswordCommand) =>
-            NewResult(await Mediator.Send(resetPasswordCommand));
-
         [HttpPost(Router.AuthenticationRouting.SignIn)]
         public async Task<IActionResult> SignIn([FromForm] SignInCommand signInCommand)
         {
             var result = await Mediator.Send(signInCommand);
 
-            if (!string.IsNullOrEmpty(result.Data.RefreshToken))
-                SetRefreshTokenInCookie(result.Data.RefreshToken, result.Data.RefreshTokenExpiration);
+            if (result.Succeeded)
+                if (!string.IsNullOrEmpty(result.Data.RefreshToken))
+                    SetRefreshTokenInCookie(result.Data.RefreshToken, result.Data.RefreshTokenExpiration);
 
             return NewResult(result);
         }
@@ -42,7 +31,12 @@ namespace Taqm.Api.Controllers
 
             Response.Cookies.Append("refreshToken", refreshToken, cookieOptions);
         }
-
+        [HttpGet(Router.AuthenticationRouting.ResetPasswordToken)]
+        public async Task<IActionResult> ResetPasswordToken([FromQuery] ResetPasswordTokenQuery resetPasswordTokenQuery) =>
+            NewResult(await Mediator.Send(resetPasswordTokenQuery));
+        [HttpPost(Router.AuthenticationRouting.ResetPassword)]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordCommand resetPasswordCommand) =>
+            NewResult(await Mediator.Send(resetPasswordCommand));
         [HttpGet(Router.AuthenticationRouting.CheckRefreshToken)]
         public async Task<IActionResult> CheckRefreshToken()
         {
@@ -54,7 +48,6 @@ namespace Taqm.Api.Controllers
 
             return NewResult(result);
         }
-
         [HttpPost(Router.AuthenticationRouting.RevokeToken)]
         public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenCommand revokeTokenCommand)
         {

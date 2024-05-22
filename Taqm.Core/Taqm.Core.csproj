@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Features\Authentication\Queries\Responses\**" />
+    <Compile Remove="Features\Emails\Queries\**" />
+    <EmbeddedResource Remove="Features\Authentication\Queries\Responses\**" />
+    <EmbeddedResource Remove="Features\Emails\Queries\**" />
+    <None Remove="Features\Authentication\Queries\Responses\**" />
+    <None Remove="Features\Emails\Queries\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Taqm.Data\Taqm.Data.csproj" />
     <ProjectReference Include="..\Taqm.Infrastructure\Taqm.Infrastructure.csproj" />
     <ProjectReference Include="..\Taqm.Service\Taqm.Service.csproj" />
@@ -14,15 +23,15 @@
 
   <ItemGroup>
 
-    <Folder Include="Features\Authentication\Queries\Responses\" />
+    <Folder Include="Features\Authentication\Queries\Validators\" />
 
     <Folder Include="Features\Authorization\Claims\Commands\Validators\" />
 
     <Folder Include="Features\Authorization\Claims\Queries\Responses\" />
 
-    <Folder Include="Features\Emails\Queries\Handlers\" />
-    <Folder Include="Features\Emails\Queries\Models\" />
-    <Folder Include="Features\Emails\Queries\Responses\" />
+    <Folder Include="Features\Chats\Queries\Responses\" />
+
+    <Folder Include="Mappings\Chats\QueryMapping\" />
   </ItemGroup>
 
   <ItemGroup>

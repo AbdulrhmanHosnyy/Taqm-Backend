@@ -10,6 +10,7 @@ using Taqm.Service.Abstracts;
 namespace Taqm.Core.Features.Users.Queries.Handlers
 {
     public class UserQueryHandler : ResponseHandler,
+        IRequestHandler<ConfirmCreateUserEmailQuery, Response<string>>,
         IRequestHandler<GetUserByIdQuery, Response<GetUserByIdResponse>>,
         IRequestHandler<GetUserByIdIncludingPostsQuery, Response<GetUserByIdIncludingPostsResponse>>,
         IRequestHandler<GetUsersListQuery, Response<List<GetUserByIdIncludingPostsResponse>>>
@@ -31,6 +32,12 @@ namespace Taqm.Core.Features.Users.Queries.Handlers
         #endregion
 
         #region Handlers
+        public async Task<Response<string>> Handle(ConfirmCreateUserEmailQuery request, CancellationToken cancellationToken)
+        {
+            var confirmEmail = await _userService.ConfirmCreateUserEmailAsync(request.UserId, request.EmailConfirmationToken);
+            return confirmEmail == "ErrorConfirmEmail" ? BadRequest<string>(_stringLocalizer[SharedResourcesKeys.ErrorConfirmEmail])
+                                                       : Success<string>(_stringLocalizer[SharedResourcesKeys.ConfirmEmailDone]);
+        }
         public async Task<Response<GetUserByIdResponse>> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
             var user = await _userService.GetUserByIdAsync(request.Id);
@@ -57,6 +64,7 @@ namespace Taqm.Core.Features.Users.Queries.Handlers
             var mappedUserList = _mapper.Map<List<GetUserByIdIncludingPostsResponse>>(userList);
             return Success(mappedUserList);
         }
+
         #endregion
 
     }

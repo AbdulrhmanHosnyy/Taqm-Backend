@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Localization;
 using Taqm.Core.Bases;
 using Taqm.Core.Features.Users.Commands.Models;
@@ -20,17 +19,15 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
         #region Fields
         private readonly IMapper _mapper;
         private readonly IStringLocalizer<SharedResources> _stringLocalizer;
-        private readonly IHttpContextAccessor _contextAccessor;
         private readonly IUserService _userService;
         #endregion
 
         #region Constructors
         public UserCommandHandler(IStringLocalizer<SharedResources> stringLocalizer, IMapper mapper,
-             IHttpContextAccessor contextAccessor, IUserService userService) : base(stringLocalizer)
+             IUserService userService) : base(stringLocalizer)
         {
             _stringLocalizer = stringLocalizer;
             _mapper = mapper;
-            _contextAccessor = contextAccessor;
             _userService = userService;
         }
         #endregion
@@ -54,9 +51,9 @@ namespace Taqm.Core.Features.Users.Commands.Handlers
                 case "Failed":
                     return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.TryToRegisterAgain]);
                 case "Success":
-                    return Success("");
+                    return Success<string>(_stringLocalizer[SharedResourcesKeys.RegisteredSuccessfully]);
                 default:
-                    return BadRequest<string>(result);
+                    return BadRequest<string>(_stringLocalizer[SharedResourcesKeys.FaildToAddUser]);
             }
         }
         public async Task<Response<string>> Handle(UpdateUserCommand request, CancellationToken cancellationToken)

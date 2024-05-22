@@ -16,7 +16,6 @@ namespace Taqm.Core.Features.Users.Commands.Validators
         {
             _stringLocalizer = stringLocalizer;
             ApplyValidationRules();
-            ApplyCustomRules();
         }
         #endregion
 
@@ -47,9 +46,6 @@ namespace Taqm.Core.Features.Users.Commands.Validators
 
             RuleFor(u => u.ConfirmPassword)
                .Equal(u => u.Password).WithMessage(_stringLocalizer[SharedResourcesKeys.ConfirmPasswordNotEqualPassword]);
-        }
-        public void ApplyCustomRules()
-        {
         }
         #endregion
     }

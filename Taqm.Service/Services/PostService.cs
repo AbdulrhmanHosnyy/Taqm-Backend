@@ -58,7 +58,7 @@ namespace Taqm.Service.Services
             Expression<Func<Post, object>> orderBy = null, string orderByDirection = OrderBy.Ascending)
         {
             var query = _postRepository.GetTableNoTracking().Include(p => p.User);
-            var processedQuery = _postRepository.FindAllAsync(query, filter, orderBy, orderByDirection);
+            var processedQuery = _postRepository.FindAllAsQuerable(query, filter, orderBy, orderByDirection);
             return processedQuery;
         }
         public Expression<Func<Post, bool>> FilterPostExpression(GetPostPaginatedListRequest getPostPaginatedListRequest)
@@ -114,7 +114,6 @@ namespace Taqm.Service.Services
 
             return await _postRepository.FindAsync(criteria, includes);
         }
-
         public async Task<string> UpdateAsync(Post post, IFormFile file)
         {
             var context = _contextAccessor.HttpContext.Request;

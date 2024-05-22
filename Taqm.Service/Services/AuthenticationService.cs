@@ -16,37 +16,54 @@ namespace Taqm.Service.Services
     {
         #region Fields
         private readonly UserManager<User> _userManager;
+        private readonly SignInManager<User> _signInManager;
         private readonly JwtSettings _jwtSettings;
         #endregion
 
         #region Constructors
-        public AuthenticationService(UserManager<User> userManager, JwtSettings jwtSettings)
+        public AuthenticationService(UserManager<User> userManager, JwtSettings jwtSettings,
+            SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _jwtSettings = jwtSettings;
+            _signInManager = signInManager;
         }
         #endregion
 
         #region Methods
-        public async Task<string> ConfirmEmailAsync(int? userId, string? code)
+        public async Task<JwtAuthResponse> SignInAsyns(string email, string password)
         {
-            if (userId is null || code is null) return "ErrorConfirmEmail";
-            var user = await _userManager.FindByIdAsync(userId.ToString());
-            var confirmEmail = await _userManager.ConfirmEmailAsync(user, code);
-            if (!confirmEmail.Succeeded) return "ErrorConfirmEmail";
-            return "Success";
-        }
-        public async Task<string> ResetPasswordAsync(string password, string email, string token)
-        {
-            // Check user existance
+            //  Check user existance
             var user = await _userManager.FindByEmailAsync(email);
-            if (user is null) return "NotFound";
+            if (user is null) return new JwtAuthResponse
+            {
+                Email = email,
+                IsAuthenticated = false,
+                Message = "EmailNotExist",
+            };
 
-            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, token, password);
-            if (resetPasswordResult.Succeeded) return "Success";
-            return resetPasswordResult.Errors.FirstOrDefault().Description;
+            //  Check if the email is confirmed
+            if (!await _userManager.IsEmailConfirmedAsync(user)) return new JwtAuthResponse
+            {
+                Email = email,
+                IsAuthenticated = false,
+                Message = "ConfirmEmail",
+                RefreshToken = null
+            };
+
+            //  SingIn process
+            var signInResult = await _signInManager.CheckPasswordSignInAsync(user, password, false);
+            if (!signInResult.Succeeded) return new JwtAuthResponse
+            {
+                Email = email,
+                IsAuthenticated = false,
+                Message = "IncorrectPassword",
+            };
+
+            //  Response Object
+            return await GetJWTTokenAsync(user);
         }
-        public async Task<JwtAuthResponse> GetJWTTokenAsync(User user)
+        private async Task<JwtAuthResponse> GetJWTTokenAsync(User user)
         {
             //  Generate Access Token
             var accessToken = await GenerateJWTToken(user);
@@ -56,7 +73,7 @@ namespace Taqm.Service.Services
             {
                 Email = user.Email,
                 IsAuthenticated = true,
-                Roles = new List<string> { "User" },
+                Roles = (List<string>)await _userManager.GetRolesAsync(user),
                 Token = new JwtSecurityTokenHandler().WriteToken(accessToken)
             };
 
@@ -79,7 +96,7 @@ namespace Taqm.Service.Services
         private async Task<JwtSecurityToken> GenerateJWTToken(User user)
         {
             //  Getting user claims
-            var userClaims = await GetClaimsAsync(user);
+            var userClaims = await GetUserClaimsAsync(user);
 
             //  Securing the key
             var symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret));
@@ -95,7 +112,7 @@ namespace Taqm.Service.Services
 
             return token;
         }
-        private async Task<List<Claim>> GetClaimsAsync(User user)
+        private async Task<List<Claim>> GetUserClaimsAsync(User user)
         {
             //  Adding Claims
             var claims = new List<Claim>
@@ -124,6 +141,14 @@ namespace Taqm.Service.Services
                 ExpiresOn = DateTime.Now.AddMinutes(_jwtSettings.RefreshTokenExpireDate),
                 CreatedOn = DateTime.UtcNow
             };
+        }
+        public async Task<string> ResetPasswordAsync(string password, string email, string token)
+        {
+            var user = await _userManager.FindByEmailAsync(email);
+            if (user is null) return "NotFound";
+
+            var resetPasswordResult = await _userManager.ResetPasswordAsync(user, token, password);
+            return resetPasswordResult.Succeeded ? "Success" : resetPasswordResult.Errors.FirstOrDefault()!.Description;
         }
         public async Task<JwtAuthResponse> GetRefreshTokenAsync(string token)
         {

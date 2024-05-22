@@ -22,7 +22,7 @@ namespace Taqm.Infrastructure.Abstracts
         Task<int> CountAsync();
         Task<int> CountAsync(Expression<Func<T, bool>> criteria);
         Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null);
-        IQueryable<T> FindAllAsync(IQueryable<T> query, Expression<Func<T, bool>> filter,
+        IQueryable<T> FindAllAsQuerable(IQueryable<T> query, Expression<Func<T, bool>> filter,
            Expression<Func<T, object>> orderBy = null, string orderByDirection = OrderBy.Ascending);
 
     }
